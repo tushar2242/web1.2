@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* overflow: scroll; */
+  background-color: #44687b;
+}
+
+TableHead .outBox {
+  width: 100vw !important;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+form {
+  background: transparent;
+}
+
+.speakButton {
+  width: 100px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: #0800ff;
+  color: white;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 5%;
+  left: 5%;
+}
+
+.StopButton {
+  width: 100px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: #de0202;
+  color: white;
+  border-radius: 5px;
+  position: fixed;
+
+  bottom: 5%;
+  left: 50%;
+}
+
+.speakButton2 {
+  width: 100px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: #1d574b;
+  color: white;
+  border-radius: 5px;
+  position: fixed;
+
+  bottom: 5%;
+  right: 5%;
+}
+
+.popup-container{
+  background-color: transparent;
+  position: relative;
+}
+
+
+
+.helpBtn {
+ position: sticky;
+  right: 10%;
+  bottom: 10%;
+  cursor: pointer;
+  user-select: none;
+
+}
+
+.popupDiv {
+  position: sticky;
+  background: transparent !important;
+  bottom: -148%;
+  display: block;
+  list-style: none;
+  width: 200px;
+  text-transform: capitalize;
+  /* height: 150px; */
+}
+
+
+.popup-content {
+  margin: auto;
+  background: transparent;
+  width: 50%;
+  padding: 5px;
+  color: white;
+  border: none;
+}
+
+.tableComp{
+  width: 100%;
+  max-width: 550px;
+  height: 100vh;
+  max-height: 550px;
+  background-color: #5A8EFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: x-large;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
