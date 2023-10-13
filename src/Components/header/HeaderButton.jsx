@@ -13,7 +13,9 @@ const HeaderButton = () => {
 
       <Box className="">
         <div className="topButtons navbar">
-          <button style={{ background: "#a0bad3" }}>
+          <button style={{ background: "#a0bad3" }}   onClick={() => {
+              handleNavigator("/bargraph");
+            }}>
             bar graph visualisation
           </button>
           <button style={{ background: "#a0bad3" }}>focused typography</button>
