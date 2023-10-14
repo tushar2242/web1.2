@@ -3,14 +3,24 @@ import useSpeech from "../keyboardShorcut/textToSpeech";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-
+import { useLocation } from "react-router-dom";
 
 
 const HeaderButton = () => {
+
+
+  const location = useLocation();
+
+  const isButtonActive = (route) => location.pathname === route;
+
+
+
+
   const excelData = useSelector((state) => state.excelData.data);
   const { setSpeech, speakText, stopSpeech } = useSpeech();
 
   const navigate = useNavigate()
+  console.log(location)
 
   function handleNavigator(val) {
     navigate(val);
@@ -68,87 +78,72 @@ const HeaderButton = () => {
 
   }, []);
 
+
+
+
+
+
+
+
   return (
     <>
-
       <Box className="">
         <div className="topButtons navbar">
-          <button style={{ background: "#a0bad3" }} onClick={() => {
-            handleNavigator("/bargraph");
-          }}>
-            bar graph visualisation
-          </button>
-          <button style={{ background: "#a0bad3" }}>focused typography</button>
-          <button
-            style={{ background: "#a0bad3" }}
-            onClick={() => {
-              handleNavigator("/statistics");
-            }}
-          >
-            statistical calculater
-          </button>
-          {/* <button
-          style={{ background: "#a0bad3" }}
-       
-        >
-          statistical clarity
-        </button> */}
+          <Button
+            text="bar graph visualisation"
+            backgroundColor={isButtonActive("/bargraph") ? "#56829a" : "#a0bad3"}
+            onClick={() => handleNavigator("/bargraph")}
+          />
+          <Button
+            text="focused typography"
+            backgroundColor={isButtonActive("/focused-typography") ? "#56829a" : "#a0bad3"}
+          />
+          <Button
+            text="statistical calculator"
+            backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+            onClick={() => handleNavigator("/statistics")}
+          />
 
           <div className="dropdown">
-            <button
-              className="btn dropdown-toggle text-light"
-              style={{
-                background: "#a0bad3",
-                fontSize: "13px",
-                fontWeight: "600",
-              }}
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-
-              onClick={() => {
-                handleNavigator("/shortcuts");
-              }}
-            >
-              accessibility shortcut
-            </button>
-            {/* <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" href="#">
-                Press F for female voice
-              </a>
-              <a className="dropdown-item" href="#">
-                Press M for Male voice
-              </a>
-              <a className="dropdown-item" href="#">
-                Press B for Stop
-              </a>
-            </div> */}
+            <Button
+              text="accessibility shortcut"
+              backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
+              onClick={() => handleNavigator("/shortcuts")}
+            />
           </div>
-          <button style={{ background: "#a0bad3" }}>
-            audible bar graph insights
-          </button>
-          <button style={{ background: "#a0bad3" }} onClick={() => {
-            handleNavigator("/");
-          }}>visual comfort mode</button>
-          <button style={{ background: "#a0bad3" }}>audible statics</button>
-          <button style={{ background: "#a0bad3" }}>undisturbed mode</button>
-          <button style={{ background: "#a0bad3" }} onClick={() => {
-            handleNavigator("/");
-          }}>Home</button>
-          {/* <button style={{ background: "#a0bad3" }}>read out aloud</button> */}
-
+          <Button text="audible bar graph insights"
+          //  backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} 
+           />
+          <Button text="visual comfort mode" backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} onClick={() => handleNavigator("/")} />
+          <Button text="audible statics" 
+          // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+           />
+          <Button text="undisturbed mode" 
+          // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+           />
+          <Button text="Home"  onClick={() => handleNavigator("/")} backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} />
           <div className="dropdown-item">
-            <button style={{ background: "#a0bad3" }} onClick={() => {
-              handleNavigator("/shortcuts");
-            }}>readout loud</button>
+            <Button text="readout loud" 
+            backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
+             onClick={() => handleNavigator("/shortcuts")} />
           </div>
         </div>
       </Box>
-
     </>
   );
 };
 
 export default HeaderButton;
+
+
+
+const Button = ({ text, backgroundColor, onClick }) => {
+  return (
+    <button
+      style={{ background: backgroundColor || "#a0bad3" }}
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  );
+};
