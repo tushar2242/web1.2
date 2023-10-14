@@ -11,11 +11,14 @@ import {
 } from "recharts";
 import HeaderButton from "../header/HeaderButton";
 import useSpeech from "../keyboardShorcut/textToSpeech";
+import { useNavigate } from "react-router-dom";
 
 
 const BarGraphEle = () => {
   const excelData = useSelector((state) => state.excelData.data);
   const { setSpeech, speakText, stopSpeech } = useSpeech();
+
+  const navigate = useNavigate()
   // Create a data structure with unique job types and their counts
   const jobTypeCounts = {};
 
@@ -46,7 +49,14 @@ const BarGraphEle = () => {
     if (event.key === "b") {
       stopSpeech(); // Trigger voice stop
     }
-    
+    if (event.ctrlKey && event.key === 'b') {
+      // Handle Ctrl + B for bar chart
+      navigate('/barchart')
+    }
+    if (event.key === 'h') {
+      // Handle Ctrl + B for bar chart
+      navigate('/')
+    }
   };
 
 

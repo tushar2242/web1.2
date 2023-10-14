@@ -9,6 +9,7 @@ const Shorcuts = () => {
             <HeaderButton />
             <div className="container-he">
                 <ol className='list-style-ol mt-4' >
+                    <li>Home Press H</li>
                     <li>Female Read Loud Press F</li>
                     <li>Male Voice Loud Press M</li>
                     <li>ShortCuts Press S</li>

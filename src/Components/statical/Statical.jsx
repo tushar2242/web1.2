@@ -77,6 +77,11 @@ const Statical = () => {
     setJobTitleCounts(counts);
   }, [excelData]);
 
+  
+
+
+
+
   return (
     <>
       <HeaderButton />
@@ -123,9 +128,9 @@ const Statical = () => {
                   {Object.keys(jobTitleCounts).map((jobTitle, index) => (
                     <TableRow key={index}>
                       <TableCell>{jobTitle}</TableCell>
-                      
+
                       <TableCell>{jobTitleCounts[jobTitle]}</TableCell>
-                      <TableCell>{jobTitleCounts[jobTitle]/excelData.length}</TableCell>
+                      <TableCell>{(excelData.length / jobTitleCounts[jobTitle]).toFixed(2)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import "./home.css";
 import { Box } from "@chakra-ui/react";
@@ -17,11 +17,12 @@ import {
 
 import GraphView from "./GraphView";
 import HeaderButton from "../../header/HeaderButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setExcelDataGlo } from "../../../redux/excelDataSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const reduxExcelData  = useSelector((state) => state.excelData.data);
 
   const [excelFileError, setExcelFileError] = useState(null);
   const [excelData, setExcelData] = useState([]);
@@ -64,9 +65,19 @@ const Home = () => {
       setExcelFileError("Error reading the file.");
     };
   };
-  // const fileTypes = ["CSV"];
 
-  //   console.log(excelData);
+
+
+  useEffect(() => {
+    // Check if the local state is empty and the Redux store has data
+    if (excelData.length === 0 && reduxExcelData.length > 0) {
+      setExcelData(reduxExcelData);
+      setDisplayedData(reduxExcelData);
+    }
+  }, [reduxExcelData, excelData]);
+
+
+
   return (
     <>
       <div className="outBox">
