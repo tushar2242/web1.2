@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSpeechSynthesis } from "react-speech-kit";
 
-function useSpeech(text) {
+function useSpeech() {
   const [speechText, setSpeechText] = useState("");
   const [speechRate, setSpeechRate] = useState(0.6);
   const { speak, cancel } = useSpeechSynthesis();
@@ -14,23 +14,22 @@ function useSpeech(text) {
   }, []);
 
   const setSpeech = (text) => {
+    // console.log(text)
     const cleaned = text.replace(/[^a-zA-Z0-9\s]/g, "");
+    console.log(cleaned)
     setSpeechText(cleaned);
   };
 
   const speakText = (voiceIndex) => {
-    if (speechText) {
-      const utterance = new SpeechSynthesisUtterance(speechText);
-      console.log(voices[voiceIndex])
-      if (voices.length > 0 && voices[voiceIndex]) {
-        utterance.voice = voices[voiceIndex];
-        utterance.rate = speechRate;
-        speak(utterance);
-      }
+    const voices = speechSynthesis.getVoices();
+    const utterance = new SpeechSynthesisUtterance(speechText);
+    // console.log(voices[voiceIndex])
+    if (voices.length > 0 && voices[voiceIndex]) {
+      utterance.voice = voices[voiceIndex];
+      utterance.rate = speechRate;
+      speak(utterance);
     }
-    else{
-        console.log('fired')
-    }
+
   };
 
   const stopSpeech = () => {

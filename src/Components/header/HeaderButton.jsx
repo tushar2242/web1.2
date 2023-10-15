@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import useSpeech from "../keyboardShorcut/textToSpeech";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 
@@ -17,23 +17,44 @@ const HeaderButton = () => {
 
 
   const excelData = useSelector((state) => state.excelData.data);
-  const { setSpeech, speakText, stopSpeech } = useSpeech();
+  const [speechSynthesis, setSpeechSynthesis] = useState(null);
+
+  const {stopSpeech } = useSpeech();
 
   const navigate = useNavigate()
-  console.log(location)
+  // console.log(location)
 
   function handleNavigator(val) {
     navigate(val);
   }
 
+  // Function to speak text
+  const speakText = (text, voiceIndex) => {
+    const cleaned = text.replace(/[^a-zA-Z0-9\s]/g, "");
+    if (speechSynthesis) {
+      const voices = speechSynthesis.getVoices();
+      const utterance = new SpeechSynthesisUtterance(cleaned);
+      utterance.voice = voices[voiceIndex];
+      speechSynthesis.speak(utterance);
+    }
+  };
+  
 
   const handleKeyPress = (event) => {
     if (event.key === "f") {
+      // console.log(JSON.stringify(excelData))
+      const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
+      const jsonLimitedData = JSON.stringify(limitedData);
+      // setSpeech(jsonLimitedData)
       // console.log('f')
-      speakText(2); // Trigger female voice speech
+      speakText(jsonLimitedData,2); // Trigger female voice speech
     }
     if (event.key === "m") {
-      speakText(1); // Trigger female voice speech
+      const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
+      const jsonLimitedData = JSON.stringify(limitedData);
+      // setSpeech(jsonLimitedData)
+      // console.log('f')
+      speakText(jsonLimitedData,1);
     }
     if (event.key === "b") {
       stopSpeech(); // Trigger voice stop
@@ -55,18 +76,12 @@ const HeaderButton = () => {
 
 
   useEffect(() => {
-    if (excelData.length > 0) {
-      setSpeech(JSON.stringify(excelData));
+    setSpeechSynthesis(window.speechSynthesis);
 
-      document.addEventListener("keydown", handleKeyPress);
-      // setSpeech('Please Drag a Excel Sheet')
+    // setSpeech(JSON.stringify(excelData));
 
-    }
-
-    else {
-
-      setSpeech('Please Drag a Excel Sheet')
-    }
+    document.addEventListener("keydown", handleKeyPress);
+    // setSpeech('Please Drag a Excel Sheet')
 
     document.addEventListener("keydown", handleKeyPress);
 
@@ -76,7 +91,7 @@ const HeaderButton = () => {
     };
 
 
-  }, []);
+  }, [excelData]);
 
 
 
@@ -113,19 +128,19 @@ const HeaderButton = () => {
           </div>
           <Button text="audible bar graph insights"
           //  backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} 
-           />
+          />
           <Button text="visual comfort mode" backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} onClick={() => handleNavigator("/")} />
-          <Button text="audible statics" 
+          <Button text="audible statics"
           // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
-           />
-          <Button text="undisturbed mode" 
+          />
+          <Button text="undisturbed mode"
           // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
-           />
-          <Button text="Home"  onClick={() => handleNavigator("/")} backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} />
+          />
+          <Button text="Home" onClick={() => handleNavigator("/")} backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} />
           <div className="dropdown-item">
-            <Button text="readout loud" 
-            backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
-             onClick={() => handleNavigator("/shortcuts")} />
+            <Button text="readout loud"
+              backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
+              onClick={() => handleNavigator("/shortcuts")} />
           </div>
         </div>
       </Box>
