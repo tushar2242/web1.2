@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "../../redux/store";
 import Shorcuts from "../shortcuts/Shortcuts";
 import BarGraphEle from "../BarGraph/BarGraphEle";
+import AudiableBarGraph from "../BarGraph/AudiableBarGraph";
 
 const SetRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const SetRoutes = () => {
         <Route path='/statistics' element={<Statical/>}/>
         <Route path="/shortcuts" element={<Shorcuts/>} />
         <Route path="/bargraph" element={<BarGraphEle />} />
+        <Route path="/audiobar" element={<AudiableBarGraph/>}/>
       </Routes>
       </BrowserRouter>
       </Provider>

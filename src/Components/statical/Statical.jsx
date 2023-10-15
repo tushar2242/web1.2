@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import HeaderButton from "../header/HeaderButton";
-
 import {
   Paper,
   Table,
@@ -8,59 +7,17 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
 } from "@mui/material";
 import { Box } from "@chakra-ui/react";
-import {
-  calculateMean,
-  calculateMedian,
-  calculateMode,
-} from "./statisticsUtils";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const Statical = () => {
-  // const excelData = useSelector((state) => state.excelData.data);
-
-  //  // Create an object to store statistics for each job title
-  //  const jobTitleStatistics = {};
-  //  const uniqueJobTitles = new Set();
-
-  //  // Group data by job title and calculate statistics
-  //  excelData.forEach((row) => {
-  //    const jobTitle = row["Job Title"];
-
-  //    // Extract and count the unique job titles
-  //    uniqueJobTitles.add(jobTitle);
-
-  //    if (!jobTitleStatistics[jobTitle]) {
-  //      jobTitleStatistics[jobTitle] = {
-  //        jobTitle,
-  //        values: [row["Number of People"]], // Assuming "Number of People" is the relevant value
-  //        mean: 0,
-  //        median: 0,
-  //        mode: 0,
-  //      };
-  //    } else {
-  //      jobTitleStatistics[jobTitle].values.push(row["Number of People"]);
-  //    }
-  //  });
-
-  //  // Calculate statistics for each job title
-  //  for (const jobTitle in jobTitleStatistics) {
-  //    const { values } = jobTitleStatistics[jobTitle];
-  //    jobTitleStatistics[jobTitle].mean = calculateMean(values);
-  //    jobTitleStatistics[jobTitle].median = calculateMedian(values);
-  //    jobTitleStatistics[jobTitle].mode = calculateMode(values);
-  //  }
-
+const Statistical = () => {
   const excelData = useSelector((state) => state.excelData.data);
-
-  // Initialize a state variable to store the job title counts
   const [jobTitleCounts, setJobTitleCounts] = useState({});
+  const [mean, setMean] = useState(null);
+  const [mode, setMode] = useState(null);
 
-  // Calculate the counts of unique job titles
   useEffect(() => {
     const counts = {};
 
@@ -77,60 +34,107 @@ const Statical = () => {
     setJobTitleCounts(counts);
   }, [excelData]);
 
-  
+  useEffect(() => {
+    const jobTitles = excelData.map((row) => row["Job Title"]);
+
+    const totalRecords = excelData.length;
+    const totalJobTitles = Object.keys(jobTitleCounts).length;
+    const meanValue = totalRecords / totalJobTitles;
+    setMean(meanValue);
+
+    // Calculate the mode
+    const mode = jobTitles.reduce(
+      (accumulator, title) => {
+        if (!accumulator.freq[title]) {
+          accumulator.freq[title] = 1;
+        } else {
+          accumulator.freq[title]++;
+        }
+        if (accumulator.freq[title] > accumulator.maxFreq) {
+          accumulator.mode = [title];
+          accumulator.maxFreq = accumulator.freq[title];
+        } else if (accumulator.freq[title] === accumulator.maxFreq) {
+          accumulator.mode.push(title);
+        }
+        return accumulator;
+      },
+      { freq: {}, mode: [], maxFreq: 0 }
+    );
 
 
+    setMode(mode.mode.join(", "));
+  }, [excelData]);
 
+  const handleAudibleDescription = () => {
+    if (window.speechSynthesis) {
+      const speechText = generateAudibleDescription();
+      const utterance = new SpeechSynthesisUtterance(speechText);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const generateAudibleDescription = () => {
+    const totalRecords = excelData.length;
+    const totalJobTitles = Object.keys(jobTitleCounts).length;
+
+    const mostCommonJobTitle = mode ? `The most common records ${mode}.` : 'There is no predominant job title.';
+
+    return `There are ${totalRecords} records and ${totalJobTitles} most records are in the data or ${mostCommonJobTitle} The data consists of ${excelData.length} rows and ${excelData.length > 0 ? Object.keys(excelData[0]).length : 0} columns.`;
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "S" && event.shiftKey) {
+        handleAudibleDescription();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   return (
     <>
       <HeaderButton />
       <br />
       <br />
+      <ol className="m-auto" style={{ margin: 'auto', width: 'fit-content', padding: '10px' }}>
+        <li>Total No of Records : - {excelData.length}</li>
+        <li>Total No of Post :- {Object.keys(jobTitleCounts).length}</li>
+        <li>Most of Records are :- {mode&&mode}</li>
+        <li>Total Number of Columns: {excelData.length > 0 ? Object.keys(excelData[0]).length : 0}</li>
+        <li>Total Number of Rows: {excelData.length-1}</li>
+        {/* <li>Mean of all Records: {mean>0&&mean.toFixed(2)}</li> */}
+      </ol>
       <Box>
-        {/* Display the counts of unique job titles */}
         {excelData.length > 0 && (
           <div className="table-responsive">
             <TableContainer>
               <Table stickyHeader>
                 <TableHead>
                   <TableRow>
-                    <TableCell
-                      style={{
-                        fontSize: "15px",
-                        fontWeight: "600",
-                        background: "ffd8d8",
-                      }}
-                    >
+                    <TableCell style={{ fontSize: "15px", fontWeight: "600", background: "ffd8d8" }}>
                       Job Title
                     </TableCell>
-                    <TableCell
-                      style={{
-                        fontSize: "15px",
-                        fontWeight: "600",
-                        background: "ffd8d8",
-                      }}
-                    >
+                    <TableCell style={{ fontSize: "15px", fontWeight: "600", background: "ffd8d8" }}>
                       Count
                     </TableCell>
-                    <TableCell
-                      style={{
-                        fontSize: "15px",
-                        fontWeight: "600",
-                        background: "ffd8d8",
-                      }}
-                    >
+                    <TableCell style={{ fontSize: "15px", fontWeight: "600", background: "ffd8d8" }}>
                       Mean
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {Object.keys(jobTitleCounts).map((jobTitle, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{jobTitle}</TableCell>
 
+                    <TableRow key={index}>
+                      {console.log(jobTitle)}
+                      <TableCell>{jobTitle}</TableCell>
                       <TableCell>{jobTitleCounts[jobTitle]}</TableCell>
-                      <TableCell>{(excelData.length / jobTitleCounts[jobTitle]).toFixed(2)}</TableCell>
+                      <TableCell>{(jobTitleCounts[jobTitle]/(jobTitle.length-1)).toFixed(2)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -143,4 +147,4 @@ const Statical = () => {
   );
 };
 
-export default Statical;
+export default Statistical;

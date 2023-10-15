@@ -38,53 +38,6 @@ const BarGraphEle = () => {
 
 
 
-  const handleKeyPress = (event) => {
-    if (event.key === "f") {
-      // console.log('f')
-      speakText(2); // Trigger female voice speech
-    }
-    if (event.key === "m") {
-      speakText(1); // Trigger female voice speech
-    }
-    if (event.key === "b") {
-      stopSpeech(); // Trigger voice stop
-    }
-    if (event.ctrlKey && event.key === 'b') {
-      // Handle Ctrl + B for bar chart
-      navigate('/barchart')
-    }
-    if (event.key === 'h') {
-      // Handle Ctrl + B for bar chart
-      navigate('/')
-    }
-  };
-
-
-
-  useEffect(() => {
-    if (excelData.length > 0) {
-      setSpeech(JSON.stringify(excelData));
-
-      document.addEventListener("keydown", handleKeyPress);
-      // setSpeech('Please Drag a Excel Sheet')
-
-    }
-
-    else {
-      
-      setSpeech('Please Drag a Excel Sheet')
-    }
-
-    document.addEventListener("keydown", handleKeyPress);
-
-    return () => {
-      // Clean up the event listener when the component unmounts
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-
-
-  }, []);
-
 
   return (
     <>

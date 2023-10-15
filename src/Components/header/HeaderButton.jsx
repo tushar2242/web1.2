@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 
-const HeaderButton = () => {
+const HeaderButton = ({ name }) => {
 
 
   const location = useLocation();
@@ -18,8 +18,9 @@ const HeaderButton = () => {
 
   const excelData = useSelector((state) => state.excelData.data);
   const [speechSynthesis, setSpeechSynthesis] = useState(null);
+  const [textData, setTextData] = useState('')
 
-  const {stopSpeech } = useSpeech();
+  const { stopSpeech } = useSpeech();
 
   const navigate = useNavigate()
   // console.log(location)
@@ -30,31 +31,34 @@ const HeaderButton = () => {
 
   // Function to speak text
   const speakText = (text, voiceIndex) => {
+    // console.log(text)
     const cleaned = text.replace(/[^a-zA-Z0-9\s]/g, "");
     if (speechSynthesis) {
+      console.log(text)
       const voices = speechSynthesis.getVoices();
       const utterance = new SpeechSynthesisUtterance(cleaned);
       utterance.voice = voices[voiceIndex];
       speechSynthesis.speak(utterance);
     }
   };
-  
+
 
   const handleKeyPress = (event) => {
     if (event.key === "f") {
+
       // console.log(JSON.stringify(excelData))
       const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
       const jsonLimitedData = JSON.stringify(limitedData);
       // setSpeech(jsonLimitedData)
       // console.log('f')
-      speakText(jsonLimitedData,2); // Trigger female voice speech
+      speakText(jsonLimitedData, 2); // Trigger female voice speech
     }
     if (event.key === "m") {
       const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
       const jsonLimitedData = JSON.stringify(limitedData);
       // setSpeech(jsonLimitedData)
       // console.log('f')
-      speakText(jsonLimitedData,1);
+      speakText(jsonLimitedData, 1);
     }
     if (event.key === "b") {
       stopSpeech(); // Trigger voice stop
@@ -71,17 +75,19 @@ const HeaderButton = () => {
       // h for bar chart
       navigate('/statistics')
     }
+    if (event.key === 'a') {
+      // h for bar chart
+      navigate('/audiobar')
+    }
   };
 
 
 
   useEffect(() => {
+    // console.log(name)
+    // setTextData(excelData)
     setSpeechSynthesis(window.speechSynthesis);
 
-    // setSpeech(JSON.stringify(excelData));
-
-    document.addEventListener("keydown", handleKeyPress);
-    // setSpeech('Please Drag a Excel Sheet')
 
     document.addEventListener("keydown", handleKeyPress);
 
@@ -102,48 +108,57 @@ const HeaderButton = () => {
 
   return (
     <>
-      <Box className="">
-        <div className="topButtons navbar">
-          <Button
-            text="bar graph visualisation"
-            backgroundColor={isButtonActive("/bargraph") ? "#56829a" : "#a0bad3"}
-            onClick={() => handleNavigator("/bargraph")}
-          />
-          <Button
-            text="focused typography"
-            backgroundColor={isButtonActive("/focused-typography") ? "#56829a" : "#a0bad3"}
-          />
-          <Button
-            text="statistical calculator"
-            backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
-            onClick={() => handleNavigator("/statistics")}
-          />
+      <div className=""
+        tabIndex="0" // Make the component focusable
+        onKeyPress={handleKeyPress} // Handle key press events
+      >
 
-          <div className="dropdown">
+
+        <Box className="">
+          <div className="topButtons navbar">
             <Button
-              text="accessibility shortcut"
-              backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
-              onClick={() => handleNavigator("/shortcuts")}
+              text="bar graph visualisation"
+              backgroundColor={isButtonActive("/bargraph") ? "#56829a" : "#a0bad3"}
+              onClick={() => handleNavigator("/bargraph")}
             />
-          </div>
-          <Button text="audible bar graph insights"
-          //  backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} 
-          />
-          <Button text="visual comfort mode" backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} onClick={() => handleNavigator("/")} />
-          <Button text="audible statics"
-          // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
-          />
-          <Button text="undisturbed mode"
-          // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
-          />
-          <Button text="Home" onClick={() => handleNavigator("/")} backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} />
-          <div className="dropdown-item">
+            <Button
+              text="focused typography"
+              backgroundColor={isButtonActive("/focused-typography") ? "#56829a" : "#a0bad3"}
+            />
+            <Button
+              text="statistical calculator"
+              backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+              onClick={() => handleNavigator("/statistics")}
+            />
+
+            <div className="dropdown">
+              <Button
+                text="accessibility shortcut"
+                backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
+                onClick={() => handleNavigator("/shortcuts")}
+              />
+            </div>
+            <Button text="audible bar graph insights"
+              backgroundColor={isButtonActive("/audiobar") ? "#56829a" : "#a0bad3"}
+              onClick={() => handleNavigator("/audiobar")}
+            />
+            <Button text="visual comfort mode" backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} onClick={() => handleNavigator("/")} />
+            <Button text="audible statics"
+            // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+            />
+            <Button text="undisturbed mode"
+            // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+            />
+            <Button text="Home" onClick={() => handleNavigator("/")} backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} />
+            {/* <div className="dropdown-item">
             <Button text="readout loud"
               backgroundColor={isButtonActive("/shortcuts") ? "#56829a" : "#a0bad3"}
               onClick={() => handleNavigator("/shortcuts")} />
+          </div> */}
           </div>
-        </div>
-      </Box>
+        </Box>
+     
+      </div>
     </>
   );
 };
