@@ -71,9 +71,13 @@ const HeaderButton = ({ name }) => {
       // h for bar chart
       navigate('/')
     }
-    if (event.key === 's') {
+    if (event.key === 'c') {
       // h for bar chart
       navigate('/statistics')
+    }
+    if (event.key === 's') {
+      // h for bar chart
+      navigate('/shortcuts')
     }
     if (event.key === 'a') {
       // h for bar chart
@@ -157,7 +161,7 @@ const HeaderButton = ({ name }) => {
           </div> */}
           </div>
         </Box>
-     
+
       </div>
     </>
   );
