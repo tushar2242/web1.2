@@ -139,6 +139,9 @@ const HeaderButton = ({ name }) => {
             background-color: ${isVisualComfortMode? "#333" : "#fff"};
             fill: ${isVisualComfortMode ? "#fff" : "#000"};
           }
+          .list-style-ol{
+            color: ${isVisualComfortMode? "#fff" : "#333"}
+          }
           // You can add additional styles here for other elements
         `}
       </style>
