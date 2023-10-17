@@ -79,12 +79,12 @@ const Statistical = () => {
 
     const mostCommonJobTitle = mode ? `The most common records ${mode}.` : 'There is no predominant job title.';
 
-    return `There are ${totalRecords} records and ${totalJobTitles} most records are in the data or ${mostCommonJobTitle} The data consists of ${excelData.length} rows and ${excelData.length > 0 ? Object.keys(excelData[0]).length : 0} columns.`;
+    return `There are ${totalRecords} records and ${totalJobTitles} most records are in the data is ${mode} The data consists of ${excelData.length} rows and ${excelData.length > 0 ? Object.keys(excelData[0]).length : 0} columns.`;
   };
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key === "S" && event.shiftKey) {
+      if (event.key === "v") {
         handleAudibleDescription();
       }
     };
@@ -134,7 +134,7 @@ const Statistical = () => {
                       {console.log(jobTitle)}
                       <TableCell>{jobTitle}</TableCell>
                       <TableCell>{jobTitleCounts[jobTitle]}</TableCell>
-                      <TableCell>{(jobTitleCounts[jobTitle]/(jobTitle.length-1)).toFixed(2)}</TableCell>
+                      <TableCell>{(jobTitleCounts[jobTitle]/Object.keys(jobTitleCounts).length).toFixed(2)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

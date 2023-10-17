@@ -18,6 +18,7 @@ const HeaderButton = ({ name }) => {
 
   const excelData = useSelector((state) => state.excelData.data);
   const [speechSynthesis, setSpeechSynthesis] = useState(null);
+
   const [textData, setTextData] = useState('')
 
   const { stopSpeech } = useSpeech();
@@ -104,6 +105,14 @@ const HeaderButton = ({ name }) => {
   }, [excelData]);
 
 
+  const [isVisualComfortMode, setVisualComfortMode] = useState(false);
+
+  const handleToggleVisualComfortMode = () => {
+    setVisualComfortMode(!isVisualComfortMode);
+  };
+
+  // const bodyBackgroundColor = isVisualComfortMode ? "#333" : "#fff";
+  const textColor = isVisualComfortMode ? "#fff" : "#000";
 
 
 
@@ -112,6 +121,27 @@ const HeaderButton = ({ name }) => {
 
   return (
     <>
+     <style>
+        {`
+          body {
+            background-color: ${isVisualComfortMode? "#333" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          #root{
+            background-color: ${isVisualComfortMode? "#333" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          .topButtons button {
+            background-color: ${isVisualComfortMode? "#333" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          .recharts-layer path {
+            background-color: ${isVisualComfortMode? "#333" : "#fff"};
+            fill: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          // You can add additional styles here for other elements
+        `}
+      </style>
       <div className=""
         tabIndex="0" // Make the component focusable
         onKeyPress={handleKeyPress} // Handle key press events
@@ -146,7 +176,14 @@ const HeaderButton = ({ name }) => {
               backgroundColor={isButtonActive("/audiobar") ? "#56829a" : "#a0bad3"}
               onClick={() => handleNavigator("/audiobar")}
             />
-            <Button text="visual comfort mode" backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} onClick={() => handleNavigator("/")} />
+            <Button
+              text="visual comfort mode"
+              backgroundColor={isVisualComfortMode? "#56829a" : "#a0bad3"}
+              onClick={() => {
+
+                handleToggleVisualComfortMode(); // Toggle visual comfort mode
+              }}
+            />
             <Button text="audible statics"
             // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
             />

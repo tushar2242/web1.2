@@ -54,12 +54,12 @@ const BarGraphEle = () => {
     };
 
     const describeGraph = () => {
-      const graphTitle = "Job Type Distribution";
-      const xAxisLabel = "Job Type";
-      const yAxisLabel = "Count of Job Type";
+      const graphTitle = "Distribution";
+      const xAxisLabel = "Type";
+      const yAxisLabel = "total number of record";
       const dataDescription = jobData.map(
         (entry) =>
-          `Job Type ${entry.jobType} has ${entry.count} counts.`
+          `Job Type ${entry.jobType} has ${entry.count} total number of record.`
       );
       const graphDescription = `${graphTitle}. ${xAxisLabel} on the x-axis. ${yAxisLabel} on the y-axis. ${dataDescription.join(" ")}`;
       speak(graphDescription);
@@ -97,7 +97,7 @@ const BarGraphEle = () => {
           <XAxis dataKey="jobType" label={{ value: "Job Type", position: "insideBottom", fill: 'white' }} tick={{ fill: "#a0bad3" }} />
           <YAxis
             label={{
-              value: "Count of Job Type",
+              value: "No Of Data",
               angle: -90,
               position: "insideLeft",
               fill: 'white'

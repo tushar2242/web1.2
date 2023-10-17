@@ -230,7 +230,8 @@ body{
 }
 
 .list-style-ol li{
-    margin-top: 10px;
+    margin-top: 15px;
+    width: 350px;
 }
 
 .graph{
