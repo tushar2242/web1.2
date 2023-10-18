@@ -96,7 +96,7 @@ body{
     display: flex;
     /* grid-template-columns: auto auto auto auto auto; */
  
-    margin-top: 2rem;
+    margin-top: 1.2rem;
     row-gap: 20px;
     width: 90%;
     flex-wrap: wrap;
@@ -135,8 +135,8 @@ body{
     /* height: 40px; */
     border-radius: 10px;
     color: white;
-    font-size: small;
-    font-weight: 600;
+    /* font-size: small; */
+    /* font-weight: 600; */
 
     text-transform: capitalize;
     padding: 14px 35px;
@@ -162,7 +162,7 @@ body{
 }
 
 .jWkLDY>span {
-    font-size: 10px !important;
+    /* font-size: 10px !important; */
     color: white;
     background-color: #ffffff;
 }
@@ -175,7 +175,7 @@ body{
 }
 
 .jWkLDY>span {
-    font-size: 10px !important;
+    /* font-size: 10px !important; */
     color: white;
     background-color: #ffffff !important;
 }
@@ -219,7 +219,7 @@ body{
     /* overflow: hidden; */
 }
 .list-style-ol{
-    font-size: 22px;
+    /* font-size: 22px; */
     color: white;
     display: flex;
     align-items: center;
@@ -229,7 +229,7 @@ body{
     flex-direction: column;
 }
 
-.list-style-ol li{
+ol li{
     margin-top: 15px;
     width: 350px;
 }

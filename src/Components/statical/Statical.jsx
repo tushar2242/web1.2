@@ -99,8 +99,7 @@ const Statistical = () => {
   return (
     <>
       <HeaderButton />
-      <br />
-      <br />
+      
       <ol className="m-auto" style={{ margin: 'auto', width: 'fit-content', padding: '10px' }}>
         <li>Total No of Records : - {excelData.length}</li>
         <li>Total No of Post :- {Object.keys(jobTitleCounts).length}</li>

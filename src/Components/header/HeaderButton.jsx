@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import './sidebar.css'
 
 
 const HeaderButton = ({ name }) => {
@@ -105,14 +106,6 @@ const HeaderButton = ({ name }) => {
   }, [excelData]);
 
 
-  const [isVisualComfortMode, setVisualComfortMode] = useState(false);
-
-  const handleToggleVisualComfortMode = () => {
-    setVisualComfortMode(!isVisualComfortMode);
-  };
-
-  // const bodyBackgroundColor = isVisualComfortMode ? "#333" : "#fff";
-  const textColor = isVisualComfortMode ? "#fff" : "#000";
 
 
 
@@ -121,30 +114,7 @@ const HeaderButton = ({ name }) => {
 
   return (
     <>
-     <style>
-        {`
-          body {
-            background-color: ${isVisualComfortMode? "#333" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
-          }
-          #root{
-            background-color: ${isVisualComfortMode? "#333" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
-          }
-          .topButtons button {
-            background-color: ${isVisualComfortMode? "#333" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
-          }
-          .recharts-layer path {
-            background-color: ${isVisualComfortMode? "#333" : "#fff"};
-            fill: ${isVisualComfortMode ? "#fff" : "#000"};
-          }
-          .list-style-ol{
-            color: ${isVisualComfortMode? "#fff" : "#333"}
-          }
-          // You can add additional styles here for other elements
-        `}
-      </style>
+
       <div className=""
         tabIndex="0" // Make the component focusable
         onKeyPress={handleKeyPress} // Handle key press events
@@ -179,14 +149,7 @@ const HeaderButton = ({ name }) => {
               backgroundColor={isButtonActive("/audiobar") ? "#56829a" : "#a0bad3"}
               onClick={() => handleNavigator("/audiobar")}
             />
-            <Button
-              text="visual comfort mode"
-              backgroundColor={isVisualComfortMode? "#56829a" : "#a0bad3"}
-              onClick={() => {
 
-                handleToggleVisualComfortMode(); // Toggle visual comfort mode
-              }}
-            />
             <Button text="audible statics"
             // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
             />
@@ -201,7 +164,7 @@ const HeaderButton = ({ name }) => {
           </div> */}
           </div>
         </Box>
-
+        <Sidebar />
       </div>
     </>
   );
@@ -221,3 +184,123 @@ const Button = ({ text, backgroundColor, onClick }) => {
     </button>
   );
 };
+
+
+
+const Sidebar = () => {
+  const [isOpen, setIsopen] = useState(false);
+  const [openProfile, setProfile] = useState(false);
+
+  const [font, setFont] = useState(14)
+  const [weight, setWeight] = useState(400)
+
+  const [isVisualComfortMode, setVisualComfortMode] = useState(false);
+  const [updateFont, setUpdateFont] = useState(false)
+
+  const handleToggleVisualComfortMode = () => {
+    setVisualComfortMode(!isVisualComfortMode);
+  };
+
+
+  const ToggleSidebar = () => {
+    isOpen === true ? setIsopen(false) : setIsopen(true);
+  }
+  return (
+    <>
+      <style>
+        {`
+          body {
+            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+            font-family: ${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"};
+            font-size:${font}px;
+            font-weight:${weight} !important;
+          }
+          #root{
+            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          .topButtons button {
+            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          .sidebar,.sd-body , .sd-link{
+            background-color: ${isVisualComfortMode ? "rgb(86, 130, 154)" : "#fff"};
+            color: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+         
+          .recharts-layer path {
+            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
+            fill: ${isVisualComfortMode ? "#fff" : "#000"};
+          }
+          .list-style-ol{
+            color: ${isVisualComfortMode ? "#fff" : "#333"}
+          }
+          // You can add additional styles here for other elements
+        `}
+      </style>
+
+
+      <div className="container-fluid mt-3">
+        <div className="btn btn-primary iconOuter" onClick={ToggleSidebar}  >
+          <i class="gg-chevron-double-right-r"></i>
+        </div>
+
+        <div className={`sidebar ${isOpen == true ? 'active' : ''}`}>
+          <div className="sd-header">
+            <h4 className="mb-0">Comfort Zone</h4>
+            <div className="btn btn-primary iconOuter" onClick={ToggleSidebar}><i class="gg-move-left"></i></div>
+          </div>
+          <div className="sd-body topButtons navbar">
+
+
+            <Button
+              text="visual comfort mode"
+              backgroundColor={isVisualComfortMode ? "#56829a" : "#a0bad3"}
+              onClick={() => {
+                handleToggleVisualComfortMode(); // Toggle visual comfort mode
+              }}
+            />
+            <Button
+              text={`${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"}`}
+              backgroundColor={updateFont ? "#56829a" : "#a0bad3"}
+              onClick={() => {
+                setUpdateFont(!updateFont); // Toggle visual comfort mode
+              }}
+            />
+            <div className="d-flex " style={{ justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+
+
+              <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Size</label>
+              <i class="gg-add" onClick={() => { setFont(font + 1) }}></i>
+              <i class="gg-math-minus" onClick={() => { setFont(font - 1) }}></i>
+
+            </div>
+            <div className="d-flex " style={{ justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+
+
+              <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Weight</label>
+              <i class="gg-add" onClick={() => { 
+                if(weight<1000){
+                  setWeight(weight + 100)
+                }}}></i>
+              <i class="gg-math-minus" onClick={() => { 
+                if(weight>0){
+                  setWeight(weight - 100) 
+                }
+                
+                }}></i>
+
+            </div>
+
+
+
+          </div>
+        </div>
+        <div className={`sidebar-overlay ${isOpen == true ? 'active' : ''}`} onClick={ToggleSidebar}></div>
+      </div>
+    </>
+  )
+}
+
+
