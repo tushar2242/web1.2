@@ -36,7 +36,7 @@ const HeaderButton = ({ name }) => {
     // console.log(text)
     const cleaned = text.replace(/[^a-zA-Z0-9\s]/g, "");
     if (speechSynthesis) {
-      console.log(text)
+      // console.log(text)
       const voices = speechSynthesis.getVoices();
       const utterance = new SpeechSynthesisUtterance(cleaned);
       utterance.voice = voices[voiceIndex];
@@ -47,7 +47,7 @@ const HeaderButton = ({ name }) => {
 
   const handleKeyPress = (event) => {
     if (event.key === "f") {
-
+      console.log('firing')
       // console.log(JSON.stringify(excelData))
       const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
       const jsonLimitedData = JSON.stringify(limitedData);
@@ -154,7 +154,7 @@ const HeaderButton = ({ name }) => {
             // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
             />
             <Button text="undisturbed mode"
-            // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+              onClick={() => stopSpeech()}
             />
             <Button text="Home" onClick={() => handleNavigator("/")} backgroundColor={isButtonActive("/") ? "#56829a" : "#a0bad3"} />
             {/* <div className="dropdown-item">
@@ -280,16 +280,17 @@ const Sidebar = () => {
 
 
               <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Weight</label>
-              <i class="gg-add" onClick={() => { 
-                if(weight<1000){
+              <i class="gg-add" onClick={() => {
+                if (weight < 1000) {
                   setWeight(weight + 100)
-                }}}></i>
-              <i class="gg-math-minus" onClick={() => { 
-                if(weight>0){
-                  setWeight(weight - 100) 
                 }
-                
-                }}></i>
+              }}></i>
+              <i class="gg-math-minus" onClick={() => {
+                if (weight > 0) {
+                  setWeight(weight - 100)
+                }
+
+              }}></i>
 
             </div>
 
