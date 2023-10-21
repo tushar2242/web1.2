@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   BarChart,
@@ -10,72 +10,160 @@ import {
   Legend,
 } from "recharts";
 import HeaderButton from "../header/HeaderButton";
+import './graph.css';
 import useSpeech from "../keyboardShorcut/textToSpeech";
-import { useNavigate } from "react-router-dom";
 
 
 const BarGraphEle = () => {
+  const { stopSpeech } = useSpeech()
   const excelData = useSelector((state) => state.excelData.data);
-  const { setSpeech, speakText, stopSpeech } = useSpeech();
+  const [xColumn, setXColumn] = useState('');
+  const [yColumn, setYColumn] = useState('');
+  const [speaking, setSpeaking] = useState(false);
 
-  const navigate = useNavigate()
-  // Create a data structure with unique job types and their counts
-  const jobTypeCounts = {};
 
-  excelData.forEach((row) => {
-    const jobType = row["Job Title"];
-    if (jobTypeCounts[jobType]) {
-      jobTypeCounts[jobType] += 1;
-    } else {
-      jobTypeCounts[jobType] = 1;
-    }
-  });
 
-  const jobData = Object.keys(jobTypeCounts).map((jobType) => ({
-    jobType,
-    count: jobTypeCounts[jobType],
+
+  const handleXaxis = (val) => {
+    setXColumn(val);
+  };
+
+  const handleYaxis = (val) => {
+    setYColumn(val);
+  };
+
+  const filteredData = excelData.map(row => ({
+    xValue: row[xColumn],
+    yValue: row[yColumn],
   }));
 
+  const handleKeyPress = (event) => {
+    if (event.key === "b") {
+      // Stop speech when "B" key is pressed
+      stopSpeech();
+    }
+    if (event.key === 'v') {
+      readSelectedData();
+    }
+  };
 
 
+  const speakText = (text) => {
+    if ("speechSynthesis" in window) {
+      const speechSynthesis = window.speechSynthesis;
+      const speechText = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(speechText);
+    } else {
+      console.error("Text-to-speech not supported in this browser.");
+    }
+  };
+
+  const readSelectedData = () => {
+    if (xColumn && yColumn) {
+      const selectedXData = excelData.map(row => row[xColumn]).join(", ");
+      const selectedYData = excelData.map(row => row[yColumn]).join(", ");
+      const text = `Selected X-axis data: ${selectedXData}. Selected Y-axis data: ${selectedYData}.`;
+      speakText(text);
+      setSpeaking(true);
+    }
+  };
+
+  useEffect(() => {
+    // Add the event listener when the component mounts
+    document.addEventListener("keydown", handleKeyPress);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [xColumn, yColumn]);
 
   return (
     <>
       <HeaderButton />
-      <div className="graph mt-4">
-        <h3>Bar Graph Element</h3>
-        <br />
-
-        {/* Create a bar chart with custom color */}
-        <BarChart width={1000} height={420} data={jobData} style={{ margin: 'auto' }}>
-          {/* <CartesianGrid stroke="transparent" />
-           */}
-
-          <CartesianGrid
-            vertical={true} // Show only vertical lines
-            horizontal={false} // Hide horizontal lines
-            stroke="#56829a" // Set grid line color
-            strokeWidth={1} // Set grid line thickness
-          />
-          <XAxis dataKey="jobType" label={{ value: "Job Type", position: "insideBottom", fill: 'white' }} tick={{ fill: "#a0bad3" }} />
-          <YAxis
-            label={{
-              value: "Count of Job Type",
-              angle: -90,
-              position: "insideLeft",
-              fill: 'white'
+    { excelData.length>0&& <button
+            onClick={readSelectedData}
+            style={{
+              backgroundColor: "rgb(160, 186, 211)",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              position:'relative',
+              left:'50%'
             }}
-            tick={{ fill: "#a0bad3" }}
+          >
+           Audiable Graph
+          </button>}
+      <div className="graph-container">
+        <div className="box-1">
+          <ColumnSelectComp
+            axis='X-Axis'
+            excelData={excelData.length > 0 ? excelData : 'No Excel Sheet'}
+            onClick={handleXaxis}
+            selectedColumn={xColumn}
           />
-          {/* <Tooltip /> */}
-          <Legend />
-          <Bar dataKey="count" fill="white" /> {/* Change the color here */}
-        </BarChart>
+          <ColumnSelectComp
+            axis='Y-Axis'
+            excelData={excelData.length > 0 ? excelData : 'No Excel Sheet'}
+            onClick={handleYaxis}
+            selectedColumn={yColumn}
+          />
+         
+        </div>
+        <div className="graph">
+          <h3>Bar Graph Element</h3>
+          <br />
+          <BarChart width={1000} height={420} data={filteredData} style={{ margin: 'auto' }}>
+            <CartesianGrid
+              vertical={true}
+              horizontal={false}
+              stroke="#56829a"
+              strokeWidth={1}
+            />
+            <XAxis dataKey="xValue" label={{ value: "X-Axis", position: "insideBottom" }} tick={{ fill: "#a0bad3" }} />
+            <YAxis
+              label={{
+                value: "Y-Axis",
+                angle: -90,
+                position: "insideLeft",
+              }}
+              tick={{ fill: "#a0bad3" }}
+            />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="yValue" fill="white" />
+          </BarChart>
+        </div>
+        <br />
+        <br />
       </div>
-      <br />
-      <br />
     </>
   );
 };
 
 export default BarGraphEle;
+
+const ColumnSelectComp = ({ excelData, axis, onClick, selectedColumn }) => {
+  return (
+    <>
+      <aside className="table-aside">
+        <h5>{axis}</h5>
+        <ul>
+          {Object.keys(excelData[0]).map((header, index) => {
+            return (
+              <li
+                key={index}
+                onClick={() => onClick(header)}
+                className={selectedColumn === header ? "selected" : ""}
+              >
+                {header}
+              </li>
+            );
+          })}
+        </ul>
+      </aside>
+    </>
+  );
+};

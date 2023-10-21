@@ -16,7 +16,7 @@ import useSpeech from "../keyboardShorcut/textToSpeech";
 const BarGraphEle = () => {
   const excelData = useSelector((state) => state.excelData.data);
   const navigate = useNavigate();
-  const {stopSpeech} = useSpeech()
+  const { stopSpeech } = useSpeech()
 
   // Create a data structure with unique job types and their counts
   const jobTypeCounts = {};

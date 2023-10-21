@@ -106,8 +106,11 @@ const HeaderButton = ({ name }) => {
   }, [excelData]);
 
 
+  const [isOpen, setIsopen] = useState(false);
 
-
+  const ToggleSidebar = () => {
+    isOpen === true ? setIsopen(false) : setIsopen(true);
+  }
 
 
 
@@ -131,6 +134,7 @@ const HeaderButton = ({ name }) => {
             <Button
               text="focused typography"
               backgroundColor={isButtonActive("/focused-typography") ? "#56829a" : "#a0bad3"}
+              onClick={ToggleSidebar}
             />
             <Button
               text="statistical calculator"
@@ -145,10 +149,10 @@ const HeaderButton = ({ name }) => {
                 onClick={() => handleNavigator("/shortcuts")}
               />
             </div>
-            <Button text="audible bar graph insights"
+            {/* <Button text="audible bar graph insights"
               backgroundColor={isButtonActive("/audiobar") ? "#56829a" : "#a0bad3"}
               onClick={() => handleNavigator("/audiobar")}
-            />
+            /> */}
 
             <Button text="audible statics"
             // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
@@ -164,7 +168,10 @@ const HeaderButton = ({ name }) => {
           </div> */}
           </div>
         </Box>
-        <Sidebar />
+        <Sidebar 
+        isOpen={isOpen}
+ToggleSidebar={ToggleSidebar}
+        />
       </div>
     </>
   );
@@ -187,8 +194,8 @@ const Button = ({ text, backgroundColor, onClick }) => {
 
 
 
-const Sidebar = () => {
-  const [isOpen, setIsopen] = useState(false);
+const Sidebar = ({isOpen,ToggleSidebar}) => {
+
   const [openProfile, setProfile] = useState(false);
 
   const [font, setFont] = useState(14)
@@ -202,9 +209,7 @@ const Sidebar = () => {
   };
 
 
-  const ToggleSidebar = () => {
-    isOpen === true ? setIsopen(false) : setIsopen(true);
-  }
+
   return (
     <>
       <style>
@@ -215,14 +220,20 @@ const Sidebar = () => {
             font-family: ${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"};
             font-size:${font}px;
             font-weight:${weight} !important;
+            
           }
           #root{
             background-color: ${isVisualComfortMode ? "#333" : "#fff"};
             color: ${isVisualComfortMode ? "#fff" : "#000"};
           }
+        .table-aside {
+          border:solid 1px ${isVisualComfortMode ? "#fff" : "#000"} !important;
+        }
+          
           .topButtons button {
             background-color: ${isVisualComfortMode ? "#333" : "#fff"};
             color: ${isVisualComfortMode ? "#fff" : "#000"};
+            font-weight:${weight} !important;
           }
           .sidebar,.sd-body , .sd-link{
             background-color: ${isVisualComfortMode ? "rgb(86, 130, 154)" : "#fff"};
@@ -243,15 +254,15 @@ const Sidebar = () => {
 
       <div className="container-fluid mt-3">
         <div className="btn btn-primary iconOuter" onClick={ToggleSidebar}  >
-          <i class="gg-chevron-double-right-r"></i>
+          <i className="gg-chevron-double-right-r"></i>
         </div>
 
         <div className={`sidebar ${isOpen == true ? 'active' : ''}`}>
           <div className="sd-header">
             <h4 className="mb-0">Comfort Zone</h4>
-            <div className="btn btn-primary iconOuter" onClick={ToggleSidebar}><i class="gg-move-left"></i></div>
+            <div className="btn btn-primary iconOuter" onClick={ToggleSidebar}><i className="gg-move-left"></i></div>
           </div>
-          <div className="sd-body topButtons navbar">
+          <div className="sd-body topButtons navbar ">
 
 
             <Button
@@ -268,24 +279,24 @@ const Sidebar = () => {
                 setUpdateFont(!updateFont); // Toggle visual comfort mode
               }}
             />
-            <div className="d-flex " style={{ justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+            <div className="d-flex txtIcon mt-4" style={{ justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
 
 
               <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Size</label>
-              <i class="gg-add" onClick={() => { setFont(font + 1) }}></i>
-              <i class="gg-math-minus" onClick={() => { setFont(font - 1) }}></i>
+              <i className="gg-add" onClick={() => { setFont(font + 1) }}></i>
+              <i className="fa-solid fa-magnifying-glass-minus" onClick={() => { setFont(font - 1) }}></i>
 
             </div>
             <div className="d-flex " style={{ justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
 
 
               <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Weight</label>
-              <i class="gg-add" onClick={() => {
+              <i className="gg-add" onClick={() => {
                 if (weight < 1000) {
                   setWeight(weight + 100)
                 }
               }}></i>
-              <i class="gg-math-minus" onClick={() => {
+              <i className="fa-solid fa-magnifying-glass-minus" onClick={() => {
                 if (weight > 0) {
                   setWeight(weight - 100)
                 }
