@@ -1,10 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import ListComp from "../ListComp/ListComp";
+
 import HeaderButton from "../header/HeaderButton";
-import useSpeech from "../keyboardShorcut/textToSpeech";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useState } from "react";
 
 
 
@@ -22,8 +17,9 @@ const Shorcuts = () => {
                     <li>Male Voice Loud Press M</li>
                     <li>ShortCuts Press S</li>
                     <li>Statistical Calculator c</li>
-                    <li>Bar Graph Visualization B</li>
-                    <li>Audiable Bar Graph A</li>
+                    <li>Graph Visualization B</li>
+                    <li>New File Upload N</li>
+                    <li>Audioable Graph :- Graph Visualization {'-> '} Select X and Y Axis {'-> '} Press Audio Graph Button or Press A</li>
                 </ol>
             </div>
         </>

@@ -1,10 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import useSpeech from "../keyboardShorcut/textToSpeech";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import './sidebar.css'
+import { setExcelDataGlo, visualMode } from "../../redux/excelDataSlice";
 
 
 const HeaderButton = ({ name }) => {
@@ -14,7 +15,7 @@ const HeaderButton = ({ name }) => {
 
   const isButtonActive = (route) => location.pathname === route;
 
-
+  const dispatch = useDispatch()
 
 
   const excelData = useSelector((state) => state.excelData.data);
@@ -48,6 +49,7 @@ const HeaderButton = ({ name }) => {
   const handleKeyPress = (event) => {
     if (event.key === "f") {
       console.log('firing')
+      alert('You are in Undisturb Mode')
       // console.log(JSON.stringify(excelData))
       const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
       const jsonLimitedData = JSON.stringify(limitedData);
@@ -56,6 +58,7 @@ const HeaderButton = ({ name }) => {
       speakText(jsonLimitedData, 2); // Trigger female voice speech
     }
     if (event.key === "m") {
+      alert('You are in Undisturb Mode')
       const limitedData = excelData.slice(0, 100); // Extract the first 100 rows of data
       const jsonLimitedData = JSON.stringify(limitedData);
       // setSpeech(jsonLimitedData)
@@ -70,20 +73,25 @@ const HeaderButton = ({ name }) => {
       navigate('/bargraph')
     }
     if (event.key === 'h') {
-      // h for bar chart
+
       navigate('/')
     }
     if (event.key === 'c') {
-      // h for bar chart
+
       navigate('/statistics')
     }
     if (event.key === 's') {
-      // h for bar chart
+
       navigate('/shortcuts')
     }
     if (event.key === 'a') {
-      // h for bar chart
+
       navigate('/audiobar')
+    }
+    if (event.key === 'n') {
+
+      dispatch(setExcelDataGlo([]));
+      handleNavigator("/")
     }
   };
 
@@ -149,14 +157,18 @@ const HeaderButton = ({ name }) => {
                 onClick={() => handleNavigator("/shortcuts")}
               />
             </div>
-            {/* <Button text="audible bar graph insights"
+            <Button text="New File"
               backgroundColor={isButtonActive("/audiobar") ? "#56829a" : "#a0bad3"}
-              onClick={() => handleNavigator("/audiobar")}
-            /> */}
+              onClick={() => {
 
-            <Button text="audible statics"
-            // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+                dispatch(setExcelDataGlo([]));
+                handleNavigator("/")
+              }}
             />
+
+            {/* <Button text="audible statics"
+            // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
+            /> */}
             <Button text="undisturbed mode"
               onClick={() => stopSpeech()}
             />
@@ -168,9 +180,9 @@ const HeaderButton = ({ name }) => {
           </div> */}
           </div>
         </Box>
-        <Sidebar 
-        isOpen={isOpen}
-ToggleSidebar={ToggleSidebar}
+        <Sidebar
+          isOpen={isOpen}
+          ToggleSidebar={ToggleSidebar}
         />
       </div>
     </>
@@ -194,20 +206,28 @@ const Button = ({ text, backgroundColor, onClick }) => {
 
 
 
-const Sidebar = ({isOpen,ToggleSidebar}) => {
+const Sidebar = ({ isOpen, ToggleSidebar }) => {
+
+  const dispatch = useDispatch()
+
+  const isVisualComfortMode1 = useSelector((state) => state.excelData.mode)
 
   const [openProfile, setProfile] = useState(false);
 
   const [font, setFont] = useState(14)
   const [weight, setWeight] = useState(400)
 
-  const [isVisualComfortMode, setVisualComfortMode] = useState(false);
+  // const [isVisualComfortMode, setVisualComfortMode] = useState(false);
   const [updateFont, setUpdateFont] = useState(false)
 
   const handleToggleVisualComfortMode = () => {
-    setVisualComfortMode(!isVisualComfortMode);
+    dispatch(visualMode(!isVisualComfortMode1))
+    // setVisualComfortMode(!isVisualComfortMode);
   };
 
+  useEffect(() => {
+
+  }, [isVisualComfortMode1])
 
 
   return (
@@ -215,37 +235,42 @@ const Sidebar = ({isOpen,ToggleSidebar}) => {
       <style>
         {`
           body {
-            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
+            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"};
             font-family: ${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"};
             font-size:${font}px;
             font-weight:${weight} !important;
             
           }
           #root{
-            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
+            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"};
           }
         .table-aside {
-          border:solid 1px ${isVisualComfortMode ? "#fff" : "#000"} !important;
+          border:solid 1px ${isVisualComfortMode1 ? "#fff" : "#000"} !important;
         }
           
           .topButtons button {
-            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
+            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"};
             font-weight:${weight} !important;
           }
           .sidebar,.sd-body , .sd-link{
-            background-color: ${isVisualComfortMode ? "rgb(86, 130, 154)" : "#fff"};
-            color: ${isVisualComfortMode ? "#fff" : "#000"};
+            background-color: ${isVisualComfortMode1 ? "rgb(86, 130, 154)" : "#fff"};
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"};
           }
          
           .recharts-layer path {
-            background-color: ${isVisualComfortMode ? "#333" : "#fff"};
-            fill: ${isVisualComfortMode ? "#fff" : "#000"};
+            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
+            fill: ${isVisualComfortMode1 ? "#fff" : "#000"};
           }
           .list-style-ol{
-            color: ${isVisualComfortMode ? "#fff" : "#333"}
+            color: ${isVisualComfortMode1 ? "#fff" : "#333"}
+          }
+          .css-1ex1afd-MuiTableCell-root{
+            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"};
+            border:solid 1px ${isVisualComfortMode1 ? "#fff" : "#000"} !important;
           }
           // You can add additional styles here for other elements
         `}
@@ -267,14 +292,14 @@ const Sidebar = ({isOpen,ToggleSidebar}) => {
 
             <Button
               text="visual comfort mode"
-              backgroundColor={isVisualComfortMode ? "#56829a" : "#a0bad3"}
+              backgroundColor={isVisualComfortMode1 ? "#a0bad3" : "#56829a"}
               onClick={() => {
                 handleToggleVisualComfortMode(); // Toggle visual comfort mode
               }}
             />
             <Button
               text={`${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"}`}
-              backgroundColor={updateFont ? "#56829a" : "#a0bad3"}
+              backgroundColor={isVisualComfortMode1 ? "#a0bad3" : "#56829a"}
               onClick={() => {
                 setUpdateFont(!updateFont); // Toggle visual comfort mode
               }}
