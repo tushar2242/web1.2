@@ -28,9 +28,9 @@
 }
 
 .viewer {
-
     position: relative;
-    top: 50%;
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .form-group{

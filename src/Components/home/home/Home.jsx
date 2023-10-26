@@ -144,7 +144,6 @@ const Home = () => {
                         {Object.keys(excelData[0]).map((header, index) => (
                           <TableCell
                             style={{
-                              fontSize: "15px",
                               fontWeight: "600",
                               background: "ffd8d8",
                             }}

@@ -68,8 +68,8 @@ const Home = () => {
             <h5>View Excel file</h5>
             {excelData.length === 0 && <>No file selected</>}
             {excelData.length > 0 && (
-              <div className="table-responsive">
-                <table className="table">
+              <div className="table-responsive-lg">
+                <table className="table ">
                   <thead>
                     <tr>
                       {Object.keys(excelData[0]).map((header, index) => (

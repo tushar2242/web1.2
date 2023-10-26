@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import './sidebar.css'
-import { setExcelDataGlo, visualMode } from "../../redux/excelDataSlice";
+import { fontMode, setExcelDataGlo, visualMode, weightMode } from "../../redux/excelDataSlice";
 
 
 const HeaderButton = ({ name }) => {
@@ -83,10 +83,6 @@ const HeaderButton = ({ name }) => {
     if (event.key === 's') {
 
       navigate('/shortcuts')
-    }
-    if (event.key === 'a') {
-
-      navigate('/audiobar')
     }
     if (event.key === 'n') {
 
@@ -211,10 +207,14 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
   const dispatch = useDispatch()
 
   const isVisualComfortMode1 = useSelector((state) => state.excelData.mode)
+  const font1 = useSelector((state) => state.excelData.font)
+  const weight1 = useSelector((state) => state.excelData.weight)
+  const family1 = useSelector((state) => state.excelData.fontFamily)
 
-  const [openProfile, setProfile] = useState(false);
+  // console.log(font1)
+  // const [openProfile, setProfile] = useState(false);
 
-  const [font, setFont] = useState(14)
+  const [font, setFont] = useState(12)
   const [weight, setWeight] = useState(400)
 
   // const [isVisualComfortMode, setVisualComfortMode] = useState(false);
@@ -227,7 +227,7 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
 
   useEffect(() => {
 
-  }, [isVisualComfortMode1])
+  }, [isVisualComfortMode1, font1, weight1, family1])
 
 
   return (
@@ -237,9 +237,9 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
           body {
             background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
             color: ${isVisualComfortMode1 ? "#fff" : "#000"};
-            font-family: ${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"};
-            font-size:${font}px;
-            font-weight:${weight} !important;
+            font-family: ${updateFont ? "Times New Roman, Times, serif" : "Ubuntu, sans-serif"};
+            font-size:${font1}px;
+            font-weight:${weight1} !important;
             
           }
           #root{
@@ -253,7 +253,7 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
           .topButtons button {
             background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
             color: ${isVisualComfortMode1 ? "#fff" : "#000"};
-            font-weight:${weight} !important;
+            font-weight:${weight1} !important;
           }
           .sidebar,.sd-body , .sd-link{
             background-color: ${isVisualComfortMode1 ? "rgb(86, 130, 154)" : "#fff"};
@@ -267,10 +267,38 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
           .list-style-ol{
             color: ${isVisualComfortMode1 ? "#fff" : "#333"}
           }
+          
+          .list-style-ol li {
+            background-color: ${isVisualComfortMode1 ? "#fff" : "#333"};
+            color: ${isVisualComfortMode1 ? "#333" : "#fff"}
+          }
           .css-1ex1afd-MuiTableCell-root{
-            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"};
-            color: ${isVisualComfortMode1 ? "#fff" : "#000"};
+            background-color: ${isVisualComfortMode1 ? "#333" : "#fff"} !important;
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"} !important;
             border:solid 1px ${isVisualComfortMode1 ? "#fff" : "#000"} !important;
+            font-family: ${updateFont ? "Times New Roman, Times, serif " : "Ubuntu, sans-serif"};
+            font-size:${font1}px;
+            font-weight:${weight1} !important;
+          }
+          .css-8coetn{
+            font-size:${font1}px !important;
+            font-weight:${weight1+200} !important;
+          }
+
+          
+          .css-q34dxg{
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"} !important;
+            font-size:${font1}px;
+            
+          }
+          .list-style-ol li {
+            font-size:${font1}px;
+          }
+          .css-y8ay40-MuiTableCell-root{
+            font-size:${font1}px !important;
+          }
+          .MuiTableCell-root .MuiTableCell-head .MuiTableCell-stickyHeader .MuiTableCell-sizeMedium .css-8coetn{
+            font-size:${font1}px !important;
           }
           // You can add additional styles here for other elements
         `}
@@ -298,7 +326,7 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
               }}
             />
             <Button
-              text={`${updateFont ? "Rubik, sans-serif" : "Ubuntu, sans-serif"}`}
+              text={`${updateFont ? "Times New Roman, Times, serif" : "Ubuntu, sans-serif"}`}
               backgroundColor={isVisualComfortMode1 ? "#a0bad3" : "#56829a"}
               onClick={() => {
                 setUpdateFont(!updateFont); // Toggle visual comfort mode
@@ -308,8 +336,16 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
 
 
               <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Size</label>
-              <i className="gg-add" onClick={() => { setFont(font + 1) }}></i>
-              <i className="fa-solid fa-magnifying-glass-minus" onClick={() => { setFont(font - 1) }}></i>
+              <i className="gg-add" onClick={() => {
+
+                // setFont(font + 1)
+                dispatch(fontMode(font1 + 1))
+
+              }}></i>
+              <i className="fa-solid fa-magnifying-glass-minus" onClick={() => {
+                setFont(font - 1)
+                dispatch(fontMode(font1 - 1))
+              }}></i>
 
             </div>
             <div className="d-flex " style={{ justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
@@ -317,13 +353,14 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
 
               <label htmlFor="font" style={{ marginBottom: '0px' }}>Font Weight</label>
               <i className="gg-add" onClick={() => {
-                if (weight < 1000) {
+                if (weight1 < 1000) {
                   setWeight(weight + 100)
+                  dispatch(weightMode(weight1 + 100))
                 }
               }}></i>
               <i className="fa-solid fa-magnifying-glass-minus" onClick={() => {
-                if (weight > 0) {
-                  setWeight(weight - 100)
+                if (weight1 > 0) {
+                  dispatch(weightMode(weight1 - 100))
                 }
 
               }}></i>
