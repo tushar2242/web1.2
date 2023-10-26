@@ -17,8 +17,9 @@ const Shorcuts = () => {
                     <li>Male Voice Loud Press M</li>
                     <li>ShortCuts Press S</li>
                     <li>Statistical Calculator c</li>
-                    <li>Graph Visualization B</li>
+                    <li>Graph Visualization Ctrl+B</li>
                     <li>New File Upload N</li>
+                    <li>Statistical Clarity x</li>
                     <li>Audioable Graph :- Graph Visualization {'-> '} Select X and Y Axis {'-> '} Press Audio Graph Button or Press A</li>
                 </ol>
             </div>

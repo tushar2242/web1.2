@@ -72,6 +72,7 @@ const Statistical = () => {
   }, [excelData]);
 
   const handleAudibleDescription = () => {
+    alert("It's in undisturbed mode")
     if (window.speechSynthesis) {
       const speechText = generateAudibleDescription();
       const utterance = new SpeechSynthesisUtterance(speechText);

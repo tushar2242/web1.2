@@ -23,6 +23,8 @@ const HeaderButton = ({ name }) => {
 
   const [textData, setTextData] = useState('')
 
+  const [statical, setStatical] = useState(false)
+
   const { stopSpeech } = useSpeech();
 
   const navigate = useNavigate()
@@ -44,6 +46,27 @@ const HeaderButton = ({ name }) => {
       speechSynthesis.speak(utterance);
     }
   };
+
+
+  async function handleStaticalClarity() {
+    
+    const voiceTxt = `<li>Home Press H</li>
+    <li>Female Read Loud Press F</li>
+    <li>Male Voice Loud Press M</li>
+    <li>ShortCuts Press S</li>
+    <li>Statistical Calculator c</li>
+    <li>Graph Visualization B</li>
+    <li>New File Upload N</li>
+    <li>Statistical Clarity x</li>
+    <li>Audioable Graph :- Graph Visualization {'-> '} Select X and Y Axis {'-> '} Press Audio Graph Button or Press A</li>`
+    if (!statical) {
+      alert("It's in Undisturbed Mode")
+      speakText(voiceTxt, 1)
+    }
+    else {
+      stopSpeech();
+    }
+  }
 
 
   const handleKeyPress = (event) => {
@@ -71,6 +94,10 @@ const HeaderButton = ({ name }) => {
     if (event.ctrlKey && event.key === 'b') {
       // Handle Ctrl + B for bar chart
       navigate('/bargraph')
+    }
+    if (event.key === 'x') {
+      // Handle Ctrl + c for bar chart
+      handleStaticalClarity()
     }
     if (event.key === 'h') {
 
@@ -162,9 +189,13 @@ const HeaderButton = ({ name }) => {
               }}
             />
 
-            {/* <Button text="audible statics"
-            // backgroundColor={isButtonActive("/statistics") ? "#56829a" : "#a0bad3"}
-            /> */}
+            <Button text="Statistical Clarity"
+              backgroundColor={statical ? "#56829a" : "#a0bad3"}
+              onClick={(e) => {
+                handleStaticalClarity(e)
+                setStatical(!statical)
+              }}
+            />
             <Button text="undisturbed mode"
               onClick={() => stopSpeech()}
             />
@@ -225,8 +256,25 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
     // setVisualComfortMode(!isVisualComfortMode);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "+") {
+      console.log('fired')
+      setFont(font + 1)
+    }
+    if (event.key === "-") {
+      console.log('fired again')
+      setFont(font - 1)
+    }
+  };
+
   useEffect(() => {
 
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
   }, [isVisualComfortMode1, font1, weight1, family1])
 
 
@@ -282,7 +330,7 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
           }
           .css-8coetn{
             font-size:${font1}px !important;
-            font-weight:${weight1+200} !important;
+            font-weight:${weight1 + 200} !important;
           }
 
           
