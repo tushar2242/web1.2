@@ -50,13 +50,13 @@ const HeaderButton = ({ name }) => {
 
   async function handleStaticalClarity() {
     
-    const voiceTxt = `Home Press H ,
-    Female Read Loud Press F ,
-    Male Voice Loud Press M ,
+    const voiceTxt = `Home Press h ,
+    Female Read Loud Press f ,
+    Male Voice Loud Press m ,
     ShortCuts Press S ,
     Statistical Calculator c ,
-    Graph Visualization B ,
-    New File Upload N ,
+    Graph Visualization b ,
+    New File Upload n ,
     Statistical Clarity x ,
     Audioable Graph :- Graph Visualization {'-> '} Select X and Y Axis {'-> '} Press Audio Graph Button or Press A ,`
     if (!statical) {
