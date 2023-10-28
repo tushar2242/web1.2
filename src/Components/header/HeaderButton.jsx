@@ -50,15 +50,15 @@ const HeaderButton = ({ name }) => {
 
   async function handleStaticalClarity() {
     
-    const voiceTxt = `<li>Home Press H</li>
-    <li>Female Read Loud Press F</li>
-    <li>Male Voice Loud Press M</li>
-    <li>ShortCuts Press S</li>
-    <li>Statistical Calculator c</li>
-    <li>Graph Visualization B</li>
-    <li>New File Upload N</li>
-    <li>Statistical Clarity x</li>
-    <li>Audioable Graph :- Graph Visualization {'-> '} Select X and Y Axis {'-> '} Press Audio Graph Button or Press A</li>`
+    const voiceTxt = `Home Press H ,
+    Female Read Loud Press F ,
+    Male Voice Loud Press M ,
+    ShortCuts Press S ,
+    Statistical Calculator c ,
+    Graph Visualization B ,
+    New File Upload N ,
+    Statistical Clarity x ,
+    Audioable Graph :- Graph Visualization {'-> '} Select X and Y Axis {'-> '} Press Audio Graph Button or Press A ,`
     if (!statical) {
       alert("It's in Undisturbed Mode")
       speakText(voiceTxt, 1)
@@ -347,6 +347,9 @@ const Sidebar = ({ isOpen, ToggleSidebar }) => {
           }
           .MuiTableCell-root .MuiTableCell-head .MuiTableCell-stickyHeader .MuiTableCell-sizeMedium .css-8coetn{
             font-size:${font1}px !important;
+          }
+          .list-style-ol li:hover{
+            color: ${isVisualComfortMode1 ? "#fff" : "#000"} !important;
           }
           // You can add additional styles here for other elements
         `}
